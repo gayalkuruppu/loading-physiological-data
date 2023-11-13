@@ -16,15 +16,15 @@ from tqdm import tqdm
 enc = LabelEncoder()
 #%%
 dataset = 'chapman'
-basepath = '/mnt/SecondaryHDD/chapman_ecg'
-trial = 'contrastive_ss' # '' | 'contrastive_ms' | 'contrastive_ml' | 'contrastive_msml' | 'contrastive_ss'
+basepath = '/Users/gayalkuruppu/Documents/Research/Datasets/ECG/chapman_ecg'
+trial = 'contrastive_msml' # '' | 'contrastive_ms' | 'contrastive_ml' | 'contrastive_msml' | 'contrastive_ss'
 
 files = os.listdir(os.path.join(basepath,'ECGDataDenoised'))
-database = pd.read_csv(os.path.join(basepath,'Diagnostics.csv'))
+database = pd.read_excel(os.path.join(basepath,'Diagnostics.xlsx'))
 dates = database['FileName'].str.split('_',expand=True).iloc[:,1]
 dates.name = 'Dates'
 dates = pd.to_datetime(dates)
-database_with_dates = pd.concat((database,dates),1)
+database_with_dates = pd.concat((database,dates), axis=1)
 #""" Unique Dates in Database """
 #enc.fit(dates)
 
@@ -93,7 +93,7 @@ sampling_rate = 500
 modality_list = ['ecg']
 fraction_list = [1]
 leads = ['I','II','III','aVR','aVL','aVF','V1','V2','V3','V4','V5','V6']
-desired_leads = ['II','V2','aVL','aVR'] #['I','II','III','aVR','aVL','aVF','V1','V2','V3','V4','V5','V6']
+desired_leads = ['I','II','III','aVR','aVL','aVF','V1','V2','V3','V4','V5','V6'] # ['II','V2','aVL','aVR']
 inputs_dict = dict()
 outputs_dict = dict()
 pids = dict()
@@ -174,12 +174,18 @@ def save_final_frames_and_labels(frames_dict,labels_dict,path,dataset):
     """ Save Frames and Labels Dicts """
     with open(os.path.join(path,'frames_phases_%s.pkl' % dataset),'wb') as f:
         pickle.dump(frames_dict,f)
+        print("path = ", os.path.join(path,'frames_phases_%s.pkl' % dataset))
+        print("saved frames")
     
     with open(os.path.join(path,'labels_phases_%s.pkl' % (dataset)),'wb') as g:
         pickle.dump(labels_dict,g)
+        print("path = ", os.path.join(path,'labels_phases_%s.pkl' % (dataset)))
+        print("saved labels")
         
     with open(os.path.join(path,'pid_phases_%s.pkl' % (dataset)),'wb') as h:
         pickle.dump(pids,h)
+        print("path = ", os.path.join(path,'pid_phases_%s.pkl' % (dataset)))
+        print("saved pids")
     print('Final Frames Saved!')
 
 savepath = os.path.join(basepath,trial,'leads_%s' % str(desired_leads))

@@ -11,7 +11,7 @@ import pickle
 import wfdb
 from tqdm import tqdm
 #%%
-basepath = '/mnt/SecondaryHDD/PhysioNetChallenge2020_Training_CPSC/Training_WFDB'
+basepath = '/Users/gayalkuruppu/Documents/Research/Datasets/ECG/a-large-scale-12-lead-electrocardiogram-database-for-arrhythmia-study-1.0.0/WFDBRecords'
 
 fs = 500
 files = os.listdir(basepath)
